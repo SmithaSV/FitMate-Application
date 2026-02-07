@@ -8,11 +8,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserRequestDto {
-@NotBlank
+@NotBlank(message="Name is required")
     private String name;
-@Email
-    @NotBlank
+@NotBlank(message="email is required")
+@Email(message="Invalid email")
     private String email;
-@NotBlank
+@NotBlank(message="password is required")
     private String password;
 }
