@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface UserService {
     Optional<UserResponseDto> findByEmail(String email);
     UserResponseDto registerUser(UserRequestDto requestDto);
+    Optional<User> findEntityByEmail(String email);
+
 }

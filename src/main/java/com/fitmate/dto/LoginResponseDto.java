@@ -6,4 +6,10 @@ import lombok.Getter;
 public class LoginResponseDto {
     @Getter
     private String token;
+    public LoginResponseDto(String token){
+        this.token=token;
+    }
+    public String getToken(){
+        return token;
+    }
 }

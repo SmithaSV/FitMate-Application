@@ -4,10 +4,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-
+@Component
 public class JwtUtil {
     private static final String SECRET = "fitmate-secret-key-fitmate-secret-key";
     private SecretKey getKey() {
@@ -30,13 +31,19 @@ public class JwtUtil {
         return claims.getSubject();
 
     }
-    public boolean isTokenvalid(String token){
+    private boolean isExpired(String token){
+        Claims claims=Jwts.parser()
+                .verifyWith(getKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claims.getExpiration().before(new Date());
+
+    }
+    public boolean validateToken(String token,String email){
         try {
-            Jwts.parser()
-                    .verifyWith(getKey())
-                    .build()
-                    .parseSignedClaims(token);
-            return true;
+            String extractedEmail=extractEmail(token);
+            return extractedEmail.equals(email) && !isExpired(token);
         }catch(Exception e){
             return false;
 
