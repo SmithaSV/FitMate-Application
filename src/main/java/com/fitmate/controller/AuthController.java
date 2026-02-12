@@ -1,5 +1,6 @@
 package com.fitmate.controller;
 
+import com.fitmate.dto.ForgotPasswordRequestDto;
 import com.fitmate.dto.LoginRequestDto;
 import com.fitmate.dto.LoginResponseDto;
 import com.fitmate.entity.User;
@@ -36,6 +37,18 @@ public class AuthController {
         String token=jwtUtil.generateToken(user.getEmail());
         return ResponseEntity.ok(new LoginResponseDto(token));
 
-
     }
-}
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(
+            @RequestBody @Valid ForgotPasswordRequestDto request) {
+
+        userService.forgotPassword(
+                request.getEmail(),
+                request.getNewPassword()
+        );
+
+        return ResponseEntity.ok("Password reset successful");
+    }
+        }
+
+

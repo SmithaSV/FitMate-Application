@@ -50,6 +50,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public UserResponseDto getCurrentUser(String email) {
+        User user=userRepository.findByEmail(email).orElseThrow(()->new RuntimeException("User not found"));
+        return UserMapper.toResponseDto(user);
+    }
+
+    @Override
+    public void forgotPassword(String email, String newPassword) {
+        User user=userRepository.findByEmail(email)
+                .orElseThrow(()->new RuntimeException("Email not registered"));
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         com.fitmate.entity.User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));

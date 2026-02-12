@@ -10,5 +10,7 @@ public interface UserService {
     Optional<UserResponseDto> findByEmail(String email);
     UserResponseDto registerUser(UserRequestDto requestDto);
     Optional<User> findEntityByEmail(String email);
+    UserResponseDto getCurrentUser(String email);
+    void forgotPassword(String email, String newPassword);
 
 }
