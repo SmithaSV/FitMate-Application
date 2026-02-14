@@ -56,11 +56,30 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void forgotPassword(String email, String newPassword) {
+    public void forgotPassword(String email){
         User user=userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("Email not registered"));
+     String token=java.util.UUID.randomUUID().toString();
+     user.setResetToken(token);
+     user.setTokenExpiry(java.time.LocalDateTime.now().plusMinutes(15));
+     userRepository.save(user);
+     System.out.println("RESET TOKEN(DEV MODE): "+token);
+    }
+
+    @Override
+    public void resetPassword(String token, String newPassword) {
+        User user=userRepository.findByResetToken(token).orElseThrow(()->new RuntimeException("Invalid reset token"));
+        if(user.getTokenExpiry()==null ||
+        user.getTokenExpiry().isBefore(java.time.LocalDateTime.now())){
+            throw new RuntimeException("Token expired");
+
+        }
         user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetToken(null);
+        user.setTokenExpiry(null);
         userRepository.save(user);
+
+
     }
 
     @Override

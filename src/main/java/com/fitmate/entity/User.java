@@ -3,6 +3,8 @@ package com.fitmate.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -30,5 +32,9 @@ public class User {
 
     @Column(nullable = false)
     private boolean enabled = true;
+    @Column(name="reset_token")
+    private String resetToken;
+    @Column(name="token_expiry")
+    private LocalDateTime tokenExpiry;
 }
 

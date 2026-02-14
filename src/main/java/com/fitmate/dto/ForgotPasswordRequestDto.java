@@ -11,7 +11,5 @@ public class ForgotPasswordRequestDto {
     @NotBlank(message="Email is required")
     @Email(message="Invalid email")
     private String email;
-    @NotBlank(message="new password is required")
-    private String newPassword;
 
 }
